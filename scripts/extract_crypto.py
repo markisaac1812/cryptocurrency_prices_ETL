@@ -18,7 +18,7 @@ DATABASE_HOST = os.getenv("DATABASE_HOST", "localhost")
 DATABASE_PORT = os.getenv("DATABASE_PORT", "5432")
 DATABASE_NAME = os.getenv("DATABASE_NAME")
 
-def extract() -> list[dict]:
+def extract(url: str) -> list[dict]:
     headers = {}
     if COINGECKO_API_KEY:
         headers["x-cg-demo-api-key"] = COINGECKO_API_KEY
@@ -32,7 +32,7 @@ def extract() -> list[dict]:
         "price_change_percentage": "1h,24h",
     }
 
-    response = requests.get(COINGECKO_URL, headers=headers, params=params, timeout=30)
+    response = requests.get(url, headers=headers, params=params, timeout=30)
     response.raise_for_status()
 
     data = response.json()
@@ -104,11 +104,10 @@ def load(rows: list[tuple]) -> int:
         total_volume_usd NUMERIC,
         price_change_percentage_1h NUMERIC,
         price_change_percentage_24h NUMERIC,
-        raw_payload JSONB NOT NULL
+        raw_payload JSONB NOT NULL,
+        UNIQUE(market_date, coin_id)  -- Prevents duplicate entries for same coin on same day
     );
     """
-
-    truncate_table_sql = "TRUNCATE TABLE crypto_raw_data RESTART IDENTITY;"
 
     insert_sql = """
     INSERT INTO crypto_raw_data (
@@ -123,21 +122,28 @@ def load(rows: list[tuple]) -> int:
         price_change_percentage_1h,
         price_change_percentage_24h,
         raw_payload
-    ) VALUES %s;
+    ) VALUES %s
+    ON CONFLICT (market_date, coin_id) DO UPDATE SET
+        extracted_at = EXCLUDED.extracted_at,
+        current_price_usd = EXCLUDED.current_price_usd,
+        market_cap_usd = EXCLUDED.market_cap_usd,
+        total_volume_usd = EXCLUDED.total_volume_usd,
+        price_change_percentage_1h = EXCLUDED.price_change_percentage_1h,
+        price_change_percentage_24h = EXCLUDED.price_change_percentage_24h,
+        raw_payload = EXCLUDED.raw_payload;
     """
 
     with _get_db_connection() as conn:
         with conn.cursor() as cur:
             cur.execute(create_table_sql)
-            cur.execute(truncate_table_sql)
-            execute_values(cur, insert_sql, rows)
+            execute_values(cur, insert_sql, rows, template=None, page_size=100)
         conn.commit()
 
     return len(rows)
 
 
 def main():
-    raw_rows = extract()
+    raw_rows = extract(COINGECKO_URL)
     transformed_rows = transform(raw_rows)
     inserted_count = load(transformed_rows)
     print(f"Loaded {inserted_count} rows into crypto_raw_data.")
@@ -145,3 +151,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
