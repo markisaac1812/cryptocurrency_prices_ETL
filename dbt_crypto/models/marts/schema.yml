@@ -1,21 +1,113 @@
-version:1
+version: 2
+
+sources:
+  - name: raw
+    database: crypto_currency
+    schema: public
+    description: Raw ingestion layer loaded from the CoinGecko API.
+    tables:
+      - name: crypto_raw_data
+        description: Raw cryptocurrency market records captured at extract time.
+        columns:
+          - name: load_id
+            description: Auto-incremented primary key from ingestion.
+            tests:
+              - not_null
+              - unique
+          - name: market_date
+            description: Date of the market snapshot.
+            tests:
+              - not_null
+          - name: coin_id
+            description: CoinGecko coin identifier.
+            tests:
+              - not_null
 
 models:
-  - name: dim_coins
-    description: "Dimension table for cryptocurrency coins, including a hashed coin_id for privacy."
+  - name: stg_crypto_raw
+    description: Cleaned staging model with trimmed text fields and typed market metrics.
     columns:
-      - name: coin_id_hash
-        description: "Hashed version of the original coin_id for privacy reasons (PK)."
-        data_test:
+      - name: load_id
+        description: Ingestion row identifier from the raw source.
+        tests:
           - not_null
           - unique
-      - name: name
-        description: "Name of the cryptocurrency coin."
-      - name: symbol
-        description: "Symbol representing the cryptocurrency coin."
-      - name: market_cap_rank
-        description: "Market capitalization rank of the cryptocurrency coin."
+      - name: extracted_at
+        description: UTC timestamp when data was extracted.
+        tests:
+          - not_null
       - name: market_date
-        description: "Date when the market data was extracted."
+        description: Calendar date for the market snapshot.
+        tests:
+          - not_null
+      - name: coin_id
+        description: Stable coin identifier used for dimensional joins.
+        tests:
+          - not_null
+      - name: symbol
+        description: Lower-cased coin ticker symbol.
+      - name: name
+        description: Human-readable coin name.
+        tests:
+          - not_null
+      - name: current_price_usd
+        description: Spot price in USD at extraction time.
+      - name: market_cap_usd
+        description: Market capitalization in USD.
+      - name: total_volume_usd
+        description: 24-hour traded volume in USD.
+      - name: price_change_percentage_1h
+        description: Percentage price change over 1 hour.
+      - name: price_change_percentage_24h
+        description: Percentage price change over 24 hours.
 
-        
+  - name: dim_coins
+    description: One row per coin with latest known metadata.
+    columns:
+      - name: coin_id
+        description: Business key for the coin dimension.
+        tests:
+          - not_null
+          - unique
+      - name: symbol
+        description: Current ticker symbol for the coin.
+      - name: name
+        description: Latest known display name for the coin.
+        tests:
+          - not_null
+      - name: updated_at
+        description: Warehouse timestamp when the dimension row was built.
+        tests:
+          - not_null
+
+  - name: fact_daily_prices
+    description: Daily price fact table at grain of one row per market_date and coin_id.
+    columns:
+      - name: price_id
+        description: Surrogate key generated from market_date and coin_id.
+        tests:
+          - not_null
+          - unique
+      - name: market_date
+        description: Date of the market observation.
+        tests:
+          - not_null
+      - name: coin_id
+        description: Foreign key to the coin dimension.
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_coins')
+              field: coin_id
+      - name: current_price_usd
+        description: Coin price in USD for the given date.
+      - name: market_cap_usd
+        description: Coin market cap in USD for the given date.
+      - name: total_volume_usd
+        description: Coin volume in USD for the given date.
+      - name: price_change_percentage_1h
+        description: One-hour percentage price change.
+      - name: price_change_percentage_24h
+        description: Twenty-four-hour percentage price change.
+      - name: extracted_at
+        description: UTC extraction timestamp for lineage/auditing.
