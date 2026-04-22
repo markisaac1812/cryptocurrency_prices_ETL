@@ -1,5 +1,5 @@
+Week 1 Day 1-2
 1-ai is so damn powerful
-
 2-def load(rows: list[tuple]) -> int:
     create_table_sql = """
     CREATE TABLE IF NOT EXISTS crypto_raw_data (
@@ -50,5 +50,8 @@
         conn.commit()
     return len(rows)
 Okay so here the purpose of this api is to get prices of bitcoin daily so it wouldnt a good idea to override the existing records with new this destroys the purpose of the project hahah. so a better approach make unique constraint on (coin id , market date) so with same day yeah the data will override each other but append to existing data if diffrnet data to compare trends prices etccc
+If you run the script twice on the same day → updates the existing row (latest prices)
+If you run it on a new day → inserts a new row
 
-3-
+Week 1 Day 3-4
+1-

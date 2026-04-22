@@ -1,0 +1,60 @@
+[0m15:28:48.003766 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'start', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x00000290AF876510>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x00000290AF86B190>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x00000290B415F8D0>]}
+
+
+============================== 15:28:48.011801 | ae138cab-d2c5-4827-938e-53fe1e923189 ==============================
+[0m15:28:48.011801 [info ] [MainThread]: Running with dbt=1.11.8
+[0m15:28:48.011801 [debug] [MainThread]: running dbt with arguments {'static_parser': 'True', 'no_print': 'None', 'version_check': 'True', 'target_path': 'None', 'warn_error_options': 'WarnErrorOptionsV2(error=[], warn=[], silence=[])', 'printer_width': '80', 'write_json': 'True', 'introspect': 'True', 'log_cache_events': 'False', 'empty': 'None', 'cache_selected_only': 'False', 'log_format': 'default', 'debug': 'False', 'fail_fast': 'False', 'partial_parse': 'True', 'send_anonymous_usage_stats': 'True', 'quiet': 'False', 'warn_error': 'None', 'profiles_dir': 'C:\\Users\\HP.SXT512\\.dbt', 'indirect_selection': 'eager', 'use_colors': 'True', 'invocation_command': 'dbt init dbt_crypto', 'use_experimental_parser': 'False', 'log_path': 'logs'}
+[0m15:28:48.167580 [info ] [MainThread]: Creating dbt configuration folder at C:\Users\HP.SXT512\.dbt
+[0m15:28:48.170675 [debug] [MainThread]: Starter project path: f:\DE\Projects\crypto_pipeline\.venv\Lib\site-packages\dbt\include\starter_project
+[0m15:28:48.268612 [info ] [MainThread]: 
+Your new dbt project "dbt_crypto" was created!
+
+For more information on how to configure the profiles.yml file,
+please consult the dbt documentation here:
+
+  https://docs.getdbt.com/docs/configure-your-profile
+
+One more thing:
+
+Need help? Don't hesitate to reach out to us via GitHub issues or on Slack:
+
+  https://community.getdbt.com/
+
+Happy modeling!
+
+[0m15:28:48.269672 [info ] [MainThread]: Setting up your profile.
+[0m15:29:38.419762 [error] [MainThread]: Encountered an error:
+
+[0m15:29:38.670151 [error] [MainThread]: Traceback (most recent call last):
+  File "f:\DE\Projects\crypto_pipeline\.venv\Lib\site-packages\dbt\cli\requires.py", line 182, in wrapper
+    result, success = func(*args, **kwargs)
+                      ^^^^^^^^^^^^^^^^^^^^^
+  File "f:\DE\Projects\crypto_pipeline\.venv\Lib\site-packages\dbt\cli\requires.py", line 128, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "f:\DE\Projects\crypto_pipeline\.venv\Lib\site-packages\dbt\cli\main.py", line 488, in init
+    results = task.run()
+              ^^^^^^^^^^
+  File "f:\DE\Projects\crypto_pipeline\.venv\Lib\site-packages\dbt\task\init.py", line 346, in run
+    self.setup_profile(profile_name)
+  File "f:\DE\Projects\crypto_pipeline\.venv\Lib\site-packages\dbt\task\init.py", line 262, in setup_profile
+    self.create_profile_from_target(adapter, profile_name=profile_name)
+  File "f:\DE\Projects\crypto_pipeline\.venv\Lib\site-packages\dbt\task\init.py", line 179, in create_profile_from_target
+    self.create_profile_from_profile_template(profile_template, profile_name)
+  File "f:\DE\Projects\crypto_pipeline\.venv\Lib\site-packages\dbt\task\init.py", line 163, in create_profile_from_profile_template
+    target = self.generate_target_from_input(prompts, initial_target)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "f:\DE\Projects\crypto_pipeline\.venv\Lib\site-packages\dbt\task\init.py", line 129, in generate_target_from_input
+    target[key] = click.prompt(
+                  ^^^^^^^^^^^^^
+  File "f:\DE\Projects\crypto_pipeline\.venv\Lib\site-packages\click\termui.py", line 171, in prompt
+    value = prompt_func(prompt)
+            ^^^^^^^^^^^^^^^^^^^
+  File "f:\DE\Projects\crypto_pipeline\.venv\Lib\site-packages\click\termui.py", line 154, in prompt_func
+    raise Abort() from None
+click.exceptions.Abort
+
+[0m15:29:38.670151 [debug] [MainThread]: Command `dbt init` failed at 15:29:38.670151 after 50.76 seconds
+[0m15:29:38.675321 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'end', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x00000290B4157050>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x00000290B4155150>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x00000290B41B7CD0>]}
+[0m15:29:38.675321 [debug] [MainThread]: Flushing usage events
+[0m15:29:39.752612 [debug] [MainThread]: An error was encountered while trying to flush usage events
