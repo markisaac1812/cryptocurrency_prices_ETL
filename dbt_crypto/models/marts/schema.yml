@@ -1,0 +1,21 @@
+version:1
+
+models:
+  - name: dim_coins
+    description: "Dimension table for cryptocurrency coins, including a hashed coin_id for privacy."
+    columns:
+      - name: coin_id_hash
+        description: "Hashed version of the original coin_id for privacy reasons (PK)."
+        data_test:
+          - not_null
+          - unique
+      - name: name
+        description: "Name of the cryptocurrency coin."
+      - name: symbol
+        description: "Symbol representing the cryptocurrency coin."
+      - name: market_cap_rank
+        description: "Market capitalization rank of the cryptocurrency coin."
+      - name: market_date
+        description: "Date when the market data was extracted."
+
+        

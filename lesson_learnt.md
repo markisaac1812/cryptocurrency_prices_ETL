@@ -54,4 +54,5 @@ If you run the script twice on the same day → updates the existing row (latest
 If you run it on a new day → inserts a new row
 
 Week 1 Day 3-4
-1-
+1-move profiles.yml in ./dbt hidden folder cause ot holds sensitive data
+2-
