@@ -53,6 +53,12 @@ Okay so here the purpose of this api is to get prices of bitcoin daily so it wou
 If you run the script twice on the same day → updates the existing row (latest prices)
 If you run it on a new day → inserts a new row
 
-Week 1 Day 3-4
+Week 1 Day 3-4 (DBT)
 1-move profiles.yml in ./dbt hidden folder cause ot holds sensitive data
-2-
+2-github allows for nested .gitignore files
+3-password in profiles.yml if all number put in "" to be string
+4-atomic Grain what one row represents
+5-dimesnion => discreptive context , facts=> measurable numeric facts
+6-{{ref}} jinija dbt template => allow dependency (like first build stg_crypyto_raw in staggin then builds other sql tables dep on this )
+7- use dbt.utils instead of MD5 using packages.yml then dbt deps
+8- seperate models dir to marts(star_schema) and stagging(for cleaning dat)
