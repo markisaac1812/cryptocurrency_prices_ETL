@@ -59,7 +59,29 @@ with DAG(
 
     dbt_operator = BashOperator(
         task_id="dbt_transform",
-        bash_command="cd /opt/airflow/dbt_crypto && dbt run && dbt test",
+                bash_command="""
+                export PATH=$PATH:/home/airflow/.local/bin
+                DBT_PROFILES_DIR=/tmp/dbt_profile
+                mkdir -p $DBT_PROFILES_DIR
+                cat > $DBT_PROFILES_DIR/profiles.yml <<'EOF'
+                dbt_crypto:
+                    target: dev
+                    outputs:
+                        dev:
+                            type: postgres
+                            host: postgres
+                            user: airflow
+                            password: airflow
+                            port: 5432
+                            dbname: airflow
+                            schema: public
+                            threads: 4
+                EOF
+                cd /opt/airflow/dbt_crypto
+                dbt deps --project-dir /opt/airflow/dbt_crypto --profiles-dir $DBT_PROFILES_DIR
+                dbt run --project-dir /opt/airflow/dbt_crypto --profiles-dir $DBT_PROFILES_DIR
+                dbt test --project-dir /opt/airflow/dbt_crypto --profiles-dir $DBT_PROFILES_DIR
+                """,
     )
 
     extract_operator >> transform_operator >> load_operator >> dbt_operator
