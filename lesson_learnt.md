@@ -62,3 +62,6 @@ Week 1 Day 3-4 (DBT)
 6-{{ref}} jinija dbt template => allow dependency (like first build stg_crypyto_raw in staggin then builds other sql tables dep on this )
 7- use dbt.utils instead of MD5 using packages.yml then dbt deps
 8- seperate models dir to marts(star_schema) and stagging(for cleaning dat)
+
+Week 1 Day 5-7(Airflow)
+
