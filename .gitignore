@@ -3,3 +3,4 @@ plan.md
 logs/
 __pycache__/
 config/
+dbt_crypto/profiles.yml

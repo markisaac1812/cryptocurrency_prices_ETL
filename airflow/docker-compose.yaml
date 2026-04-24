@@ -98,6 +98,8 @@ services:
       POSTGRES_USER: airflow
       POSTGRES_PASSWORD: airflow
       POSTGRES_DB: airflow
+    ports:                    # ADD THESE 2 LINES
+      - "5433:5432"          # RIGHT HERE, AFTER environment, BEFORE volumes  
     volumes:
       - postgres-db-volume:/var/lib/postgresql/data
     healthcheck:

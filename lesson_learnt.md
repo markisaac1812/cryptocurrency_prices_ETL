@@ -68,4 +68,16 @@ Week 1 Day 5-7(Airflow)
 1-Dockerfile = used when you build your own image
   docker-compose = used when you run existing images together
 2-deploy project on EC2 (3lshn akid msh haseb container y run 3la computer kol dah )
-3-  
+3-push docker-compose.yml to github normally(It defines your whole pipeline (Airflow + Postgres + Redis))
+4-bug that took 15 hours to solve -> services:
+  postgres:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: airflow
+      POSTGRES_PASSWORD: airflow
+      POSTGRES_DB: airflow
+    ports:                    # ADD THESE 2 LINES
+      - "5433:5432"  
+
+   THIS MEANS IF I WANT TO USE AIRFLOW DB (RECOMMENDED) REPLACE IN ENV USER AND PASSWORD AND DB NAME WITH THAT PROVIDED NOT ONLY ENV BUT ALSO FOR DBT . ALSO PORTS:5433:5432 MEANS DOCKER POSTGES MAP INTERNAL PORT 5432: TO 5433 SO ANY REQUEST MUST BE VIA THIS PORT 5433
+
