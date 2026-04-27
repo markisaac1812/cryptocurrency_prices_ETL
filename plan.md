@@ -182,3 +182,19 @@ docker-compose logs -f
 # AWS CLI
 aws s3 ls s3://your-bucket/
 aws s3 cp data.json s3://your-bucket/raw/
+
+
+What's Next: Week 2 (AWS Migration)
+Now you migrate this exact pipeline to AWS:
+Changes needed:
+
+Replace local Postgres → Redshift
+Replace psycopg2.connect() → boto3 + S3 + Redshift COPY
+Add Terraform to provision infrastructure
+Deploy Airflow on EC2 (or use AWS MWAA)
+
+Files to update:
+
+extract_crypto.py - add S3 upload logic
+dbt/profiles.yml - point to Redshift instead of local Postgres
+Create terraform/ directory with infrastructure code
