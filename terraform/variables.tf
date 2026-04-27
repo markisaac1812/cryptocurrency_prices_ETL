@@ -10,19 +10,19 @@ variable "project_name" {
   default     = "crypto-pipeline"
 }
 
-variable "redshift_master_username" {
+variable "db_master_username" {
   type        = string
-  description = "Redshift admin username"
+  description = "RDS master username"
   default     = "admin"
 }
 
-variable "redshift_master_password" {
+variable "db_master_password" {
   type        = string
-  description = "Redshift admin password"
+  description = "RDS master password"
   sensitive   = true
 }
 
 variable "my_ip" {
   type        = string
-  description = "Your public IP for Redshift access (find it at https://whatismyipaddress.com)"
+  description = "Your public IP for database access (find it at https://whatismyipaddress.com)"
 }
