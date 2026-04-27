@@ -12,8 +12,14 @@ if os.path.isdir(SCRIPTS_DIR) and SCRIPTS_DIR not in sys.path:
     sys.path.insert(0, SCRIPTS_DIR)
 
 def extract_task(ti):
-    from extract_crypto import COINGECKO_URL, extract
+    from extract_crypto import COINGECKO_URL, extract, upload_to_s3, S3_BUCKET, AWS_REGION
     raw_rows = extract(COINGECKO_URL)
+    
+    # Upload to S3
+    if S3_BUCKET:
+        s3_key = upload_to_s3(raw_rows, S3_BUCKET, AWS_REGION)
+        ti.xcom_push(key="s3_key", value=s3_key)
+    
     ti.xcom_push(key="raw_rows", value=raw_rows)
 
 def transform_task(ti):
@@ -21,7 +27,6 @@ def transform_task(ti):
     raw_rows = ti.xcom_pull(task_ids="extract", key="raw_rows")
     transformed_rows = transform(raw_rows)
     ti.xcom_push(key="transformed_rows", value=transformed_rows)
-
 
 def load_task(ti):
     from extract_crypto import load
@@ -31,8 +36,8 @@ def load_task(ti):
 
 
 with DAG(
-    dag_id="crypto_etl_daily_9pm",
-    description="Extract, transform, load crypto data and run dbt",
+    dag_id="crypto_etl_aws_daily",
+    description="Extract, transform, load crypto data to AWS RDS and run dbt",
     schedule="0 21 * * *",  # daily at 9 PM Cairo time
     start_date=pendulum.datetime(2026, 4, 23, 21, 0, tz="Africa/Cairo"),
     catchup=False,
@@ -59,29 +64,12 @@ with DAG(
 
     dbt_operator = BashOperator(
         task_id="dbt_transform",
-                bash_command="""
-                export PATH=$PATH:/home/airflow/.local/bin
-                DBT_PROFILES_DIR=/tmp/dbt_profile
-                mkdir -p $DBT_PROFILES_DIR
-                cat > $DBT_PROFILES_DIR/profiles.yml <<'EOF'
-                dbt_crypto:
-                    target: dev
-                    outputs:
-                        dev:
-                            type: postgres
-                            host: postgres
-                            user: airflow
-                            password: airflow
-                            port: 5432
-                            dbname: airflow
-                            schema: public
-                            threads: 4
-                EOF
-                cd /opt/airflow/dbt_crypto
-                dbt deps --project-dir /opt/airflow/dbt_crypto --profiles-dir $DBT_PROFILES_DIR
-                dbt run --project-dir /opt/airflow/dbt_crypto --profiles-dir $DBT_PROFILES_DIR
-                dbt test --project-dir /opt/airflow/dbt_crypto --profiles-dir $DBT_PROFILES_DIR
-                """,
+        bash_command="""
+        export PATH=$PATH:/home/airflow/.local/bin
+        cd /opt/airflow/dbt_crypto
+        dbt run --profiles-dir /opt/airflow/dbt_crypto
+        dbt test --profiles-dir /opt/airflow/dbt_crypto
+        """,
     )
 
     extract_operator >> transform_operator >> load_operator >> dbt_operator

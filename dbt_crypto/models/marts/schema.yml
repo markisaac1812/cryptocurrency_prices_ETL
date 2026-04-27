@@ -2,7 +2,7 @@ version: 2
 
 sources:
   - name: raw
-    database: airflow
+    database: crypto_db
     schema: public
     description: Raw ingestion layer loaded from the CoinGecko API.
     tables:
