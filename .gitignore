@@ -3,8 +3,8 @@ logs/
 __pycache__/
 config/
 dbt_crypto/profiles.yml
-terraform/terraform.tfstate
-terraform/terraform.tfstate.backup
-terraform/terraform.tfvars
-terraform/terraform_learn.md
-.terraform/
+# terraform/terraform.tfstate
+# terraform/terraform.tfstate.backup
+# terraform/terraform.tfvars
+# terraform/terraform_learn.md
+# .terraform/
