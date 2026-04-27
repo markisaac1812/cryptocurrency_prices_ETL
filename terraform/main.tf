@@ -219,7 +219,7 @@ resource "aws_db_subnet_group" "rds_subnet_group" {
 resource "aws_db_instance" "crypto_postgres" {
   identifier           = "${var.project_name}-postgres"
   engine               = "postgres"
-  engine_version       = "16.1"
+  engine_version       = "16"
   instance_class       = "db.t3.micro"  # FREE TIER ELIGIBLE!
   allocated_storage    = 20              
   storage_type         = "gp2"

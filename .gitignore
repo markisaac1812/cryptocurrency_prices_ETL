@@ -3,8 +3,9 @@ logs/
 __pycache__/
 config/
 dbt_crypto/profiles.yml
-# terraform/terraform.tfstate
-# terraform/terraform.tfstate.backup
+terraform/terraform.tfstate
+terraform/terraform.tfstate.backup
 terraform/terraform.tfvars
 terraform/gpt_explained.md
-# .terraform/
+terraform/.terraform/
+terraform/.terraform.lock.hcl
