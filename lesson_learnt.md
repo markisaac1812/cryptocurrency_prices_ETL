@@ -80,3 +80,9 @@ Week 1 Day 5-7(Airflow)
       - "5433:5432"  
 
    THIS MEANS IF I WANT TO USE AIRFLOW DB (RECOMMENDED) REPLACE IN ENV USER AND PASSWORD AND DB NAME WITH THAT PROVIDED NOT ONLY ENV BUT ALSO FOR DBT . ALSO PORTS:5433:5432 MEANS DOCKER POSTGES MAP INTERNAL PORT 5432: TO 5433 SO ANY REQUEST MUST BE VIA THIS PORT 5433
+
+WEEK2 DAY8-9
+1. BOTO3 only know AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY . you must write those as it is
+2. you use terraform output xxxx (specified in outputs.tf file) to print put important info for Config
+3. always change schema and profile yml files whenver you use diffrent db . if use local db configuere them to work for that , if use docker db use configure them to work for that , if use AWS RDS db also do the same
+4. to view data in AWS RDS use pgadmin or psql (no data in AWS console)
