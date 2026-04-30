@@ -86,3 +86,11 @@ WEEK2 DAY8-9
 2. you use terraform output xxxx (specified in outputs.tf file) to print put important info for Config
 3. always change schema and profile yml files whenver you use diffrent db . if use local db configuere them to work for that , if use docker db use configure them to work for that , if use AWS RDS db also do the same
 4. to view data in AWS RDS use pgadmin or psql (no data in AWS console)
+
+
+Week2 Day 10
+1. 2 ways to deploy
+      first: warp everythig to images push to ECR(elastic cintainer regsitry -> store docker images like docker hub) then ECS pulls image and deploys it 
+      Second: use EC2 via SSH connection
+2. SSH:secure shell -> imagine EC2 is like a virtual computer owned by amazon in their data centre (just as hardware comp) SSH is like a mouse and keyboard to access that computer from your place (like accessing that computer terminal and write commands to be executed from place you are sitting)    
+3.  
