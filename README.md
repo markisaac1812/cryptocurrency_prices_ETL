@@ -218,7 +218,7 @@ Open URL in browser:
 
 ### Airflow DAG - Successful Run
 
-![Airflow DAG](Screenshot(22).png)
+![Airflow DAG](Screenshot22.png)
 
 *4-stage ETL pipeline: Extract → Transform → Load → dbt Transform*
 
