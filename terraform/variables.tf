@@ -26,3 +26,8 @@ variable "my_ip" {
   type        = string
   description = "Your public IP for database access (find it at https://whatismyipaddress.com)"
 }
+
+variable "ec2_key_name" {
+  type        = string
+  description = "Name of SSH key pair for EC2 access"
+}

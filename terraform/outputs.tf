@@ -23,3 +23,18 @@ output "connection_command" {
   description = "Command to connect to RDS"
   value       = "psql -h ${aws_db_instance.crypto_postgres.address} -U ${aws_db_instance.crypto_postgres.username} -d ${aws_db_instance.crypto_postgres.db_name} -p 5432"
 }
+
+output "ec2_public_ip" {
+  description = "Public IP of EC2 instance"
+  value       = aws_instance.airflow_ec2.public_ip
+}
+
+output "ec2_ssh_command" {
+  description = "Command to SSH into EC2"
+  value       = "ssh -i /path/to/your-key.pem ubuntu@${aws_instance.airflow_ec2.public_ip}"
+}
+
+output "airflow_ui_url" {
+  description = "Airflow UI URL"
+  value       = "http://${aws_instance.airflow_ec2.public_ip}:8080"
+}
