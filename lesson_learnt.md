@@ -92,5 +92,5 @@ Week2 Day 10
 1. 2 ways to deploy
       first: warp everythig to images push to ECR(elastic cintainer regsitry -> store docker images like docker hub) then ECS pulls image and deploys it 
       Second: use EC2 via SSH connection
+      (create ec2 instance -> open ssh connection -> install docker and docker compose -> clone repo -> create .env for airflow -> install dbt inside airflow -> start airflow by docker compose up )
 2. SSH:secure shell -> imagine EC2 is like a virtual computer owned by amazon in their data centre (just as hardware comp) SSH is like a mouse and keyboard to access that computer from your place (like accessing that computer terminal and write commands to be executed from place you are sitting)    
-3.  
